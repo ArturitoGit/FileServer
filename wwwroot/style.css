@@ -1,0 +1,47 @@
+body {
+    height : 96vh ;
+    display : flex ;
+    flex-direction : column ;
+    align-items: center;
+    justify-content:center;
+
+    background-image: linear-gradient( 135deg, #ABDCFF 10%, #0396FF 100%);  
+    color : white ;    
+}
+
+h2 {
+    text-align : center ;
+    color : white ;
+}
+
+#input_file {
+    display : none ;
+}
+
+#menu_upload {
+    display : flex ;
+    /* Elements of menu upload are verically placed and centered */
+    flex-direction : column ;
+    align-items: center ;
+}
+
+#menu_upload img {
+    max-width : 400px ;
+}
+
+#menu_upload_label {
+    font-size : 1.5em ;
+    text-align : center ;
+}
+
+p {
+    text-align : center ;
+    font-weight: bold;
+}
+
+a {
+    color : white ;
+    text-decoration: none ;
+    margin-top : 10px;
+    margin-bottom : 20px ;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="button-style.css">
+
+        <title>File server</title>
+    </head>
+
+    <body>        
+        <div id="menu">
+            <h2>Pick an option</h2>
+            <button id="btn_upload" class="classic-btn red">Upload a file</button>
+            <button id="btn_download" class="classic-btn green">Download a file</button>
+            <!-- Hidden file input -->
+            <input id="input_file" type="file" name="name" style="display: none;" />
+        </div>
+
+        <div id="menu_upload">
+            <p>
+                <span id="menu_upload_label"></span></br>
+            </p>
+            <img src="qrcode.png"/>
+            <a href="#">https://the_link_i_want_to_click</a>
+            <button id="btn_upload_back" class="classic-btn">Back to menu</button> 
+        </div>
+
+        <!-- The javascript renderer -->
+        <script src="renderer.js"></script>
+    </body>
+</html>
