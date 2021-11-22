@@ -17,6 +17,7 @@ btn_upload.onclick = function () {
 
 // On some document uploaded
 input_file.oninput = function () {
+    console.log(input_file.files[0]) ;
     showUploadMenu() ;
 }
 

@@ -12,6 +12,9 @@ namespace Core
 {
     public class Program
     {
+
+        public const string PORT = "80" ;
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -22,7 +25,7 @@ namespace Core
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:80") ;                    
+                    webBuilder.UseUrls($"http://localhost:{PORT}") ;                    
                 });
     }
 }

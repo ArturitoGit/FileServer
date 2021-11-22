@@ -14,7 +14,7 @@ namespace UI
         public static void Main(string[] args)
         {
             // Launch the Core Server
-            Task.Run(() => Core.Program.Main(args)) ;
+            // Task.Run(() => Core.Program.Main(args)) ;
             CreateHostBuilder(args).Build().Run();
         }
 

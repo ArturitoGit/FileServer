@@ -38,5 +38,7 @@ namespace Core.Domain.Host
                 throw new Exception ("No valid ip address was found for host") ;
             }
         }
+
+        public string GetPort() => Program.PORT ;
     }
 }

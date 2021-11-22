@@ -40,7 +40,10 @@ namespace Core.Domain.Server.Pipelines
                     )) ;
                 }
 
-                // Download the file in the wwwroot
+                // Get the port
+                string port = _hostResolver.GetPort() ;
+
+                // Move the file in the wwwroot
                 // TODO
 
                 // Build the address to access it
