@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain.Files;
 using Core.Domain.Host;
+using Core.Domain.Server.Pipelines;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -17,7 +20,7 @@ namespace Core
 
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            //CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -27,5 +30,6 @@ namespace Core
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls($"http://localhost:{PORT}") ;                    
                 });
+
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -40,5 +41,17 @@ namespace Core.Domain.Host
         }
 
         public string GetPort() => Program.PORT ;
+
+        public string GetWWWRootPath()
+        {
+            return Path.Combine(
+                // Get the whole project absolute path
+                new DirectoryInfo(Environment.CurrentDirectory)
+                .Parent!.Parent!.Parent!.Parent!
+                .FullName,
+                // Go to the wwwroot from there
+                "UI","Domain","wwwroot"
+            );
+        }
     }
 }

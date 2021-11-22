@@ -11,5 +11,7 @@ namespace Core.Domain.Host.Services
          * Get the port the server is listening to.
          **/
         string GetPort() ;
+
+        string GetWWWRootPath () ;
     }
 }
