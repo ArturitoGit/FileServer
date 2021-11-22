@@ -6,20 +6,25 @@ const btn_upload = document.getElementById("btn_upload") ;
 const btn_upload_back = document.getElementById("btn_upload_back") ;
 const menu_upload_label = document.getElementById("menu_upload_label") ;
 const btn_download = document.getElementById("btn_download") ;
+const link = document.getElementById("link") ;
+
+const { ipcRenderer } = require("electron");
+
 
 onStart() ;
 
 // On button "Upload" clicked
-btn_upload.onclick = function () {
-    // Trigger the hidden file input
-    input_file.click() ;
-}
+btn_upload.addEventListener("click", () => {
+    ipcRenderer.send("select-file");
+});
 
-// On some document uploaded
-input_file.oninput = function () {
-    console.log(input_file.files[0]) ;
+ipcRenderer.on("select-file-reply", (sender, path) => {
+    // If select file dialog was canceled
+    if (path == null) return ;
+    // If a path was given
+    link.innerHTML = path ;
     showUploadMenu() ;
-}
+});
 
 btn_upload_back.onclick = function () {
     showFirstMenu() ;

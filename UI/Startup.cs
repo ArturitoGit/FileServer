@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +33,26 @@ namespace UI
 
             app.UseDefaultFiles();
             app.UseStaticFiles();    
+
+            // Open the Electron-Window here
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+
+            // Enable select file option
+            Electron.IpcMain.On("select-file", async (args) => {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                var options = new OpenDialogOptions {
+                    Properties = new OpenDialogProperty[] {
+                        OpenDialogProperty.openFile
+                    }
+                };
+
+                // Call the core pipeline 
+                // TODO
+
+                string[] files = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+                Electron.IpcMain.Send(mainWindow, "select-file-reply", files);
+            });
+            
         }
     }
 }
