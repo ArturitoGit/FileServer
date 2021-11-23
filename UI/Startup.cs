@@ -47,10 +47,13 @@ namespace UI
                 };
 
                 string[] files = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+                if (files.Length <= 0) return ;
                 //Electron.IpcMain.Send(mainWindow, "select-file-reply", files);
 
-                // ?
-                
+                var mediator = Core.Startup.MEDIATOR_INSTANCE ;
+                if (mediator is null) return ;
+                var result = await mediator.Send(new Core.Domain.Server.Pipelines.UploadFile.Request(files[0])) ;
+                Electron.IpcMain.Send(mainWindow, "select-file-reply", result.Address) ;
                 
             });
             

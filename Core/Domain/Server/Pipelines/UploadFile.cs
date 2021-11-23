@@ -51,6 +51,7 @@ namespace Core.Domain.Server.Pipelines
 
                 // Move the file in the wwwroot
                 string wwwroot_path = _hostResolver.GetWWWRootPath() ;
+                Console.WriteLine(wwwroot_path) ;
                 string file_name ;
                 try {
                     string old_path = Directory.GetParent(request.FileFolderPath) is null ? 
