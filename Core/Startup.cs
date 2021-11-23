@@ -20,20 +20,16 @@ namespace Core
 {
     public class Startup
     {
-
-        public static IMediator MEDIATOR_INSTANCE = null! ;
-
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add scopes
             services.AddScoped<IHostResolver,HostResolver>() ;
             services.AddScoped<IFileMover,FileMover>() ;
-
+            
             services.AddMediatR(typeof(Startup)) ;
-
-            // Update the static variable to make the mediator usable by UI project
-            MEDIATOR_INSTANCE = services.BuildServiceProvider().GetRequiredService<IMediator>() ;
+            services.AddMvc() ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,9 +41,13 @@ namespace Core
             }
 
             app.UseRouting();
-
             app.UseDefaultFiles();
             app.UseStaticFiles();  
+
+            // Allow use of controllers
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers() ;
+            }) ;
 
         }
     }
