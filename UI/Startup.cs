@@ -46,11 +46,12 @@ namespace UI
                     }
                 };
 
-                // Call the core pipeline 
-                // TODO
-
                 string[] files = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
-                Electron.IpcMain.Send(mainWindow, "select-file-reply", files);
+                //Electron.IpcMain.Send(mainWindow, "select-file-reply", files);
+
+                // ?
+                
+                
             });
             
         }

@@ -57,7 +57,7 @@ namespace Core.Domain.Server.Pipelines
                         request.FileFolderPath :
                         Directory.GetParent(request.FileFolderPath)!.FullName ;
                     file_name = Path.GetFileName(request.FileFolderPath) ;
-                    await _fileMover.MoveFile(
+                    await _fileMover.CopyFile(
                         old_path,
                         wwwroot_path,
                         file_name
@@ -86,8 +86,6 @@ namespace Core.Domain.Server.Pipelines
                     address,
                     string.Empty
                 );
-
-                throw new System.NotImplementedException() ;
             }
         }
     }
