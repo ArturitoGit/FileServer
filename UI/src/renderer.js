@@ -1,3 +1,5 @@
+const { ipcRenderer } = require("electron");
+
 // Get the elements from the page
 const menu = document.getElementById("menu") ;
 const menu_upload = document.getElementById("menu_upload") ;
@@ -8,32 +10,33 @@ const menu_upload_label = document.getElementById("menu_upload_label") ;
 const btn_download = document.getElementById("btn_download") ;
 const link = document.getElementById("link") ;
 
-const { ipcRenderer } = require("electron");
-
-
 onStart() ;
 
-// On button "Upload" clicked
-btn_upload.addEventListener("click", () => {
-    ipcRenderer.send("select-file");
-});
+// When "Upload" clicked
+btn_upload.onclick = () => 
+    ipcRenderer.invoke('select-file')
+    .then(onFileSelected) ;
 
-ipcRenderer.on("select-file-reply", (sender, path) => {
-    // If select file dialog was canceled
-    if (path == null) return ;
-    // If a path was given
-    link.innerHTML = path ;
+// When file has been selected
+function onFileSelected (result)
+{
+    if (result.canceled) return ;
+    link.innerHTML = result.filePaths[0] ;
     showUploadMenu() ;
-});
-
-btn_upload_back.onclick = function () {
-    showFirstMenu() ;
-    // Reset the content of the input to make the upload button work again
-    input_file.value = null ;
 }
 
 btn_download.onclick = function () {
-    showDownloadMenu() ;
+    ipcRenderer.invoke('download-click')
+    .then(onDownloadClickReply) ;
+}
+
+function onDownloadClickReply (result)
+{
+    
+}
+
+btn_upload_back.onclick = function () {
+    showFirstMenu() ;
 }
 
 // Function called on page initialisation
