@@ -47,10 +47,9 @@ namespace Core.Domain.Host
             return Path.Combine(
                 // Get the whole project absolute path
                 new DirectoryInfo(Environment.CurrentDirectory)
-                .Parent!.Parent!.Parent!.Parent!
                 .FullName,
                 // Go to the wwwroot from there
-                "Core","wwwroot"
+                "wwwroot"
             );
         }
     }

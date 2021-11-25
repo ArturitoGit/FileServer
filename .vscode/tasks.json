@@ -22,7 +22,8 @@
             ],
             "options": {
                 "cwd": "${workspaceFolder}/UI"
-            }
+            },
+            "problemMatcher": []
         }
     ]
 }

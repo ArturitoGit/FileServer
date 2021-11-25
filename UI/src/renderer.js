@@ -1,43 +1,27 @@
-const { ipcRenderer } = require("electron");
-
 // Get the elements from the page
-const menu = document.getElementById("menu") ;
-const menu_upload = document.getElementById("menu_upload") ;
-const input_file = document.getElementById("input_file") ;
-const btn_upload = document.getElementById("btn_upload") ;
-const btn_upload_back = document.getElementById("btn_upload_back") ;
+const menu              = document.getElementById("menu") ;
+const menu_upload       = document.getElementById("menu_upload") ;
+const input_file        = document.getElementById("input_file") ;
+const btn_upload        = document.getElementById("btn_upload") ;
+const btn_back          = document.getElementById("btn_upload_back") ;
 const menu_upload_label = document.getElementById("menu_upload_label") ;
-const btn_download = document.getElementById("btn_download") ;
-const link = document.getElementById("link") ;
+const btn_download      = document.getElementById("btn_download") ;
+const link              = document.getElementById("link") ;
 
+// Setup the page
 onStart() ;
 
-// When "Upload" clicked
-btn_upload.onclick = () => 
-    ipcRenderer.invoke('select-file')
-    .then(onFileSelected) ;
-
-// When file has been selected
-function onFileSelected (result)
-{
-    if (result.canceled) return ;
-    link.innerHTML = result.filePaths[0] ;
-    showUploadMenu() ;
-}
-
-btn_download.onclick = function () {
-    ipcRenderer.invoke('download-click')
-    .then(onDownloadClickReply) ;
-}
-
-function onDownloadClickReply (result)
-{
-    
-}
-
-btn_upload_back.onclick = function () {
+// On buttons click
+btn_upload.onclick      = () => port.postMessage({ type: "upload-clicked"   }) ;
+btn_download.onclick    = () => port.postMessage({ type: "download-clicked" }) ;
+btn_back.onclick        = () => {
+    port.postMessage({ type: "back-clicked" }) ;
     showFirstMenu() ;
 }
+
+// On server response for the clicked event
+function onUploadReturnReceived     (address) { showUploadMenu  (address) }
+function onDownloadReturnReceived   (address) { showDownloadMenu(address) }
 
 // Function called on page initialisation
 function onStart()
@@ -49,20 +33,66 @@ function onStart()
 
 function showFirstMenu ()
 {
+    // Erase the second menu
     menu_upload.style.display = "none" ;
+    // Make the first menu visible
     menu.style.display = "block" ;
 }
 
-function showUploadMenu ()
+function showUploadMenu (address)
 {
-    menu_upload_label.innerHTML = "Your document is available at this address : "
+    // Update label
+    menu_upload_label.innerHTML = "Your document is available at this address : " ;
+    // Update link
+    link.innerHTML = address ;
+    // Make the second menu visible
+    menu_upload.style.display = "flex" ;
+    // Make the first menu invisible
+    menu.style.display = "none" ;
+}
+
+function showDownloadMenu (address)
+{
+    menu_upload_label.innerHTML = "Please upload your file there : " ;
+    link.innerHTML = address ;
     menu_upload.style.display = "flex" ;
     menu.style.display = "none" ;
 }
 
-function showDownloadMenu ()
-{
-    menu_upload_label.innerHTML = "Please upload your file there : " ;
-    menu_upload.style.display = "flex" ;
-    menu.style.display = "none" ;
+/* --------------------------- COMMUNICATION WITH MAIN --------------------------- */
+
+// Will contain the access to the main 
+var port ;
+
+window.onmessage = (event) => {
+    // If message is register-port type
+    if (event.source === window && event.data === 'main-world-port') {
+        // Register the port and subscribe to it
+        port = event.ports[0] ;
+        port.onmessage = onMessage ;
+    }
 }
+
+function onMessage ( event )
+{
+    console.log("message received by renderer !") ;
+    
+    // Extract the type from the message
+    let type = event.data.type ;
+    if (type == null) return ;
+
+    // Map to the different functions depending on the type
+    switch (type)
+    {
+        case "upload-return" :
+            onUploadReturnReceived(event.data.address) ;
+            break ;
+        case "download-return" :
+            onDownloadReturnReceived(event.data.address) ;
+            break ;
+    }
+}
+
+/* ------------------------------------------------------------------------------- */
+
+

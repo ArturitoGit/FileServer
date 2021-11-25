@@ -1,8 +1,11 @@
+const { ipcRenderer } = require('electron')
 
-const { contextBridge, ipcRenderer } = require('electron')
+const windowLoaded = new Promise(resolve => {
+  window.onload = resolve
+})
 
-// Allow renderer to communicate with main
-contextBridge.exposeInMainWorld('ipcRenderer', ipcRenderer)
-
-window.addEventListener('DOMContentLoaded', () => {
+ipcRenderer.on('main-world-port', async (event) => {
+  await windowLoaded
+  // Give the port to the renderer
+  window.postMessage('main-world-port', '*', event.ports)
 })
