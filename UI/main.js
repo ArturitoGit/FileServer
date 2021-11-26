@@ -127,8 +127,13 @@ async function onUploadClickedReceived ()
     var result = await dialog.showOpenDialog({ properties: ['openFile'] }) ;
     if (result.canceled || result.filePaths.length <= 0) return ;
 
+    var file_path = result.filePaths[0] ;
+    var file_name = path.parse(file_path).base ;
+
+    console.log('File name computed : ' + file_name) ;
+
     // Notify the webserver
-    worker.postMessage({ type: 'upload-clicked', path: result.filePaths[0] }) ;
+    worker.postMessage({ type: 'upload-clicked', path: file_path, name: file_name }) ;
 }
 
 async function onDownloadClickedReceived ()

@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="button-style.css">
 
+        <script src="../node_modules/qrcode/qrcode.js"></script>
+        
         <title>File server</title>
     </head>
 
@@ -23,7 +25,7 @@
             <p>
                 <span id="menu_upload_label"></span></br>
             </p>
-            <img src="qrcode.png"/>
+            <div id="qrcode"></div>
             <a href="#" id="link">https://the_link_i_want_to_click</a>
             <button id="btn_upload_back" class="classic-btn">Back to menu</button> 
         </div>

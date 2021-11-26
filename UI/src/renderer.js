@@ -7,6 +7,7 @@ const btn_back          = document.getElementById("btn_upload_back") ;
 const menu_upload_label = document.getElementById("menu_upload_label") ;
 const btn_download      = document.getElementById("btn_download") ;
 const link              = document.getElementById("link") ;
+const qrcode            = document.getElementById("qrcode") ;
 
 // Setup the page
 onStart() ;
@@ -44,6 +45,8 @@ function showFirstMenu ()
 {
     // Erase the second menu
     menu_upload.style.display = "none" ;
+    // Reset the qcrcode
+    qrcode.innerHTML = '' ;
     // Make the first menu visible
     menu.style.display = "block" ;
 }
@@ -52,6 +55,8 @@ function showUploadMenu (address)
 {
     // Update label
     menu_upload_label.innerHTML = "Your document is available at this address : " ;
+    // Show a QR code of the address
+    new QRCode( qrcode, address ) ;
     // Update link
     link.innerHTML = address ;
     // Make the second menu visible
@@ -63,6 +68,7 @@ function showUploadMenu (address)
 function showDownloadMenu (address)
 {
     menu_upload_label.innerHTML = "Please upload your file there : " ;
+    new QRCode( qrcode, address ) ;
     link.innerHTML = address ;
     menu_upload.style.display = "flex" ;
     menu.style.display = "none" ;

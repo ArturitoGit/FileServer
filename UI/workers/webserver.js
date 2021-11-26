@@ -12,6 +12,7 @@ const host = hostResolver.getIp() ;
 
 // Will contain the path to a file to download on the phone
 var upload_file_path ;
+var upload_file_name ;
 
 // When MAIN send an upload file path, it becomes downloadable at /upload
 parentPort.on('message', 
@@ -26,7 +27,7 @@ parentPort.on('message',
         switch (type)
         {
             case 'upload-clicked' :
-                onUploadClicked(content.path) ;
+                onUploadClicked(content.path, content.name) ;
                 break ;
             case 'download-clicked' :
                 onDownloadClicked() ;
@@ -35,10 +36,11 @@ parentPort.on('message',
     }
 ) ;
 
-function onUploadClicked (path)
+function onUploadClicked (path, name)
 {
-    // Update the path
+    // Update the path and name of the file
     upload_file_path = path ;
+    upload_file_name = name ;
 
     // Give the address to the main
     parentPort.postMessage({ type: 'upload-ready', address:`http://${host}:${port}/upload` }) ;
@@ -58,7 +60,11 @@ const server = http.createServer( (req,res) =>
             parentPort.postMessage({
                 type: 'file-uploaded'
             }) ;
-            sendFile(res, upload_file_path, 'text/plain') ;
+            // Make the file downloadable
+            res.writeHead(200, {
+                "Content-Type": "application/octet-stream",
+                "Content-Disposition" : "attachment; filename=" + upload_file_name});
+            fs.createReadStream(upload_file_path).pipe(res);
             break ;
         case ('/download') :
             handleDownloadRequest(req, res) ;
