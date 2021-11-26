@@ -12,16 +12,25 @@ const link              = document.getElementById("link") ;
 onStart() ;
 
 // On buttons click
-btn_upload.onclick      = () => port.postMessage({ type: "upload-clicked"   }) ;
-btn_download.onclick    = () => port.postMessage({ type: "download-clicked" }) ;
-btn_back.onclick        = () => {
+btn_upload.onclick = function () {
+    port.postMessage({ type: "upload-clicked" }) ;
+}
+
+btn_download.onclick = function () {
+    port.postMessage({ type: "download-clicked" }) ;
+}
+
+btn_back.onclick = function () {
     port.postMessage({ type: "back-clicked" }) ;
     showFirstMenu() ;
 }
 
 // On server response for the clicked event
-function onUploadReturnReceived     (address) { showUploadMenu  (address) }
-function onDownloadReturnReceived   (address) { showDownloadMenu(address) }
+var onUploadReady = address => showUploadMenu(address) ;
+var onDownloadReady = address => showDownloadMenu(address) ; 
+var onFileUploaded = () => {} ;
+var onFileDownloaded = () => showFirstMenu ;
+
 
 // Function called on page initialisation
 function onStart()
@@ -75,7 +84,8 @@ window.onmessage = (event) => {
 
 function onMessage ( event )
 {
-    console.log("message received by renderer !") ;
+    console.log("message received by renderer ! : ") ;
+    console.log(event) ;
     
     // Extract the type from the message
     let type = event.data.type ;
@@ -84,11 +94,17 @@ function onMessage ( event )
     // Map to the different functions depending on the type
     switch (type)
     {
-        case "upload-return" :
-            onUploadReturnReceived(event.data.address) ;
+        case "file-downloaded" :
+            onFileDownloaded() ;
             break ;
-        case "download-return" :
-            onDownloadReturnReceived(event.data.address) ;
+        case "file-uploaded" :
+            onFileUploaded() ;
+            break ;
+        case "upload-ready" :
+            onUploadReady(event.data.address) ;
+            break ;
+        case "download-ready" :
+            onDownloadReady(event.data.address) ;
             break ;
     }
 }

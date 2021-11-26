@@ -1,16 +1,26 @@
-const { app, BrowserWindow, dialog, ipcMain, MessageChannelMain } = require('electron')
+const { app, BrowserWindow, dialog, MessageChannelMain } = require('electron')
 const path = require('path')
 const fetch = require ('electron-fetch').default
+const { Worker } = require('worker_threads') ;
+var fs = require ('fs') ;
 
 // Will contain the port to communicate with the renderer
 var port ;
+
+// Status of the app
+const UPLOADING = 0 ;
+const DOWNLOADING = 1 ;
+const MENU = 2 ;
+var status = MENU ;
 
 function createWindow () {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: 
-            { preload: path.join(__dirname, 'preload.js') }
+        { 
+            preload: path.join(__dirname, 'preload.js')
+        }
     })
 
     win.loadFile('./src/index.html')
@@ -39,9 +49,102 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
     }
+    // Shut down the webserver
+    if (worker != null) worker.terminate() ;
 })
 
+/* --------------------------- COMMUNICATION WITH WEBSERVER --------------------------- */
+
+// When the webserver returns the path of the file uploaded by the phone
+async function onFileDownloaded ( path, name )
+{
+    // Check the status and update it
+    if (status != DOWNLOADING) return ;
+    status = MENU ;
+
+    console.log('name : ' + name) ;
+    
+    // Ask the new path to the user
+    var result = await dialog.showSaveDialog({ defaultPath: name }) ;
+    if (result.canceled || result.filePath.length <= 0) return ;
+
+    // Move the file from the old path to the new one
+    fs.rename(path, result.filePath, 
+        err => { if (err) console.log('Failed to copy file from tmp to ' + result.filePath) } ) ;
+
+    // Notify the renderer 
+    port.postMessage({ type: 'file-downloaded' }) ;
+}
+
+function onFileUploaded ()
+{
+    // Update the status
+    status = MENU ;
+
+    // Notify the renderer
+    port.postMessage({ type: 'file-uploaded' }) ;
+}
+
+
+// If webserver is ready then notify the renderer with the provided address
+var onDownloadReady = address => port.postMessage({ type: 'download-ready', address: address }) ;
+var onUploadReady   = address => port.postMessage({ type: 'upload-ready',   address: address }) ;
+
+// Start the webserver and subscribe to its msg
+const worker = new Worker('./workers/webserver.js') ;
+worker.on('message', content => {
+
+    // Extract the type of the message
+    var type = content.type ;
+    if (type == null) return ;
+
+    // Use the type to map to an action
+    switch (type)
+    {
+        case 'file-downloaded' :
+            onFileDownloaded(content.path, content.name) ;
+            break ;
+        case 'file-uploaded' :
+            onFileUploaded() ;
+            break ;
+        case 'upload-ready' :
+            onUploadReady(content.address) ;
+            break ;
+        case 'download-ready' :
+            onDownloadReady(content.address) ;
+            break ;
+    }
+}) ;
+
 /* --------------------------- COMMUNICATION WITH RENDERER --------------------------- */
+
+async function onUploadClickedReceived ()
+{
+    // Update the status
+    status = UPLOADING ;
+
+    // Show a dialog to select a file
+    var result = await dialog.showOpenDialog({ properties: ['openFile'] }) ;
+    if (result.canceled || result.filePaths.length <= 0) return ;
+
+    // Notify the webserver
+    worker.postMessage({ type: 'upload-clicked', path: result.filePaths[0] }) ;
+}
+
+async function onDownloadClickedReceived ()
+{
+    // Update the status 
+    status = DOWNLOADING ;
+
+    // Notify the webserver
+    worker.postMessage({ type: 'download-clicked' }) ;
+}
+
+async function onBackClicked ()
+{
+    // Update the status
+    status = MENU ;
+}
 
 function onMessage ( event )
 {
@@ -63,95 +166,6 @@ function onMessage ( event )
         case "back-clicked" :
             onBackClicked() ;
             break ;
-    }
-}
-
-async function onUploadClickedReceived ()
-{
-    // Show a dialog to select a file
-    var result = await dialog.showOpenDialog({ properties: ['openFile'] }) ;
-    if (result.canceled || result.filePaths.length <= 0) return ;
-
-    // Send a request to the CoreServer
-    const url = "http://localhost:8082/Get/upload?localPath=" + result.filePaths[0] ;
-    var result ;
-    try {
-        result = await fetch(url).then( result => result.json()) ;
-    } catch (Exception) {
-        // If host could not be found
-        // TODO
-        console.log("Server could not be reached") ;
-        return ; 
-    }
-
-    // If something went wrong with the file
-    if (!result.success) 
-    {
-        // TODO
-        console.log("Received errror from the core server : " + result.error ) ;
-        return ;
-    }
-
-    // Answer the renderer
-    port.postMessage({ 
-        type: "upload-return",
-        address: result.address
-    }) ;
-}
-
-async function onDownloadClickedReceived ()
-{
-    // Open the save dialog to select the place to save the file
-    var result = await dialog.showOpenDialog({ properties: ['openDirectory'] }) ;
-    if (result.canceled || result.filePaths.length <= 0) return ;
-
-    // Send a request to the CoreServer
-    const url = "http://localhost:8082/Get/download?localPath=" + result.filePaths[0] ;
-    var result ;
-    try {
-        result = await fetch(url).then( result => result.json()) ;
-    } catch (Exception) {
-        // If host could not be found
-        // TODO
-        console.log("Server could not be reached") ;
-        return ; 
-    }
-
-    // If something went wrong with the Core server
-    if (!result.success) 
-    {
-        // TODO
-        console.log("Received errror from the core server : " + result.error ) ;
-        return ;
-    }
-
-    // Answer the renderer
-    port.postMessage({ 
-        type: "download-return",
-        address: result.address
-    }) ;
-}
-
-async function onBackClicked ()
-{
-    // Send a request to the CoreServer
-    const url = "http://localhost:8082/Get/reset" ;
-    var result ;
-    try {
-        result = await fetch(url).then( result => result.json()) ;
-    } catch (Exception) {
-        // If host could not be found
-        // TODO
-        console.log("Server could not be reached") ;
-        return ; 
-    }
-
-    // If something went wrong with the Core server
-    if (!result.success) 
-    {
-        // TODO
-        console.log("Received errror from the core server : " + result.error ) ;
-        return ;
     }
 }
 
