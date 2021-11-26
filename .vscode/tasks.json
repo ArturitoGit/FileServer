@@ -2,28 +2,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Start webserver",
-            "type": "process",
-            "command": "dotnet",
-            "args": [
-                "run"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/Core"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Start UI",
-            "type": "process",
+            "label": "Start",
+            "type": "shell",
             "command": "npm",
             "args": [
                 "start"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}/UI"
-            },
-            "problemMatcher": []
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
