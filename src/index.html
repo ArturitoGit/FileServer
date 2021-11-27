@@ -7,7 +7,6 @@
         <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
         <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="button-style.css">
 
         <script src="../node_modules/qrcode/qrcode.js"></script>
         
@@ -16,9 +15,12 @@
 
     <body>        
         <div id="menu">
-            <h2>Pick an option</h2>
-            <button id="btn_upload" class="classic-btn red">Upload a file</button>
-            <button id="btn_download" class="classic-btn green">Download a file</button>
+            <img src="Verre.png" id="logo"/>
+            <h2>Pick an option : </h2>
+            <div id="menu-btns">
+                <button id="btn_upload">Upload a file</button>
+                <button id="btn_download">Download a file</button>
+            </div>
         </div>
 
         <div id="menu_upload">

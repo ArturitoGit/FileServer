@@ -1,7 +1,8 @@
 // This file contains the code for a webserver
 const http = require("http");
+const path = require('path')
 const fs = require('fs') ;
-const { workerData, parentPort } = require('worker_threads') ;
+const { parentPort } = require('worker_threads') ;
 var formidable = require('formidable') ;
 const hostResolver = require('./getIp');
 
@@ -70,7 +71,7 @@ const server = http.createServer( (req,res) =>
             handleDownloadRequest(req, res) ;
             break ;
         case '/style.css' : // STYLE PAGE
-            sendFile(res,'./workers/style.css','text/css') ;
+            sendFile(res,'workers/style.css','text/css') ;
             break ;
         default :
             res.writeHead(404,'Not found') ;
@@ -78,14 +79,17 @@ const server = http.createServer( (req,res) =>
     }
 });
 
-function sendFile( response, file_path, file_format)
+function sendFile( response, file_path, file_format )
 {
+
+    var full_path = path.join(__dirname, file_path) ;
+
     // Read the file, and then ...
-    fs.readFile(file_path, (error, content) => 
+    fs.readFile( full_path, (error, content) => 
     {
         // If the file could not be read return 404
         if (error) {
-            console.log('Error while trying to read ' + file_path ) ;
+            console.log('Error while trying to read ' + full_path ) ;
             response.writeHead(404,"Not found") ;
             response.end() ;
             return ;
@@ -100,7 +104,7 @@ function handleDownloadRequest ( req, res )
 {
     if (req.method == "GET")
     {
-        sendFile(res, './workers/download.html', 'text/html') ;
+        sendFile(res, 'download.html', 'text/html') ;
     }
     else if (req.method == "POST")
     {
@@ -115,7 +119,7 @@ function handleDownloadRequest ( req, res )
                 return ;
             }
 
-            sendFile(res, './workers/downloaded.html', 'text/html') ;
+            sendFile(res, 'downloaded.html', 'text/html') ;
             var file_path = files.file.filepath ;
             var file_name = files.file.originalFilename ;
             parentPort.postMessage({ type: 'file-downloaded', path: file_path, name: file_name }) ;

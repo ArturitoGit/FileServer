@@ -5,13 +5,23 @@ body {
     flex-direction : column ;
     align-items: center;
     justify-content:center;
-    background-image: linear-gradient( 135deg, #ABDCFF 10%, #0396FF 100%);  
-    color : white ;    
+    background-color: black ;  
+    color : greenyellow ;    
+    font-family: Verdana,Geneva,sans-serif; 
+}
+
+#menu-btns {
+    display: flex ;
+    justify-content: center ;
 }
 
 h2 {
     text-align : center ;
-    color : white ;
+    color : greenyellow ;
+}
+
+#logo {
+    max-height : 20em ;
 }
 
 #input_file {
@@ -40,8 +50,29 @@ p {
 }
 
 a {
-    color : white ;
+    color : #adff2f ;
     text-decoration: none ;
     margin-top : 10px;
     margin-bottom : 20px ;
+}
+
+button {
+    border: 2px solid greenyellow;
+    color : greenyellow ;
+    background : none ;
+    cursor: pointer;
+    border-radius: 5px ;
+    font-size: 1em ;
+    padding: 10px ;
+    margin: 10px ;
+    min-width: 150px ;
+}
+
+button:hover {
+    background-color : greenyellow ;
+    color : black ;
+}
+
+#qrcode {
+    margin : 20px ;
 }

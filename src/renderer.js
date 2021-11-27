@@ -68,7 +68,12 @@ function showUploadMenu (address)
 function showDownloadMenu (address)
 {
     menu_upload_label.innerHTML = "Please upload your file there : " ;
-    new QRCode( qrcode, address ) ;
+    new QRCode("qrcode", {
+        text: "http://jindo.dev.naver.com/collie",
+        colorDark : "#adff2f",
+        colorLight : "#000000",
+        correctLevel : QRCode.CorrectLevel.H
+    });
     link.innerHTML = address ;
     menu_upload.style.display = "flex" ;
     menu.style.display = "none" ;

@@ -17,12 +17,20 @@ function createWindow () {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
+        // Make the title bar of the window black and not draggable
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+          color: '#000000',
+          symbolColor: '#adff2f'
+        },
         webPreferences: 
         { 
             preload: path.join(__dirname, 'preload.js')
         }
     })
 
+    // Remove the menu
+    win.setMenu(null) ;
     win.loadFile('./src/index.html')
 
     // Generate ports
@@ -91,7 +99,7 @@ var onDownloadReady = address => port.postMessage({ type: 'download-ready', addr
 var onUploadReady   = address => port.postMessage({ type: 'upload-ready',   address: address }) ;
 
 // Start the webserver and subscribe to its msg
-const worker = new Worker('./workers/webserver.js') ;
+const worker = new Worker( __dirname + '/workers/webserver.js') ;
 worker.on('message', content => {
 
     // Extract the type of the message
