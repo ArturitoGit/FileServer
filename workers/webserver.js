@@ -71,7 +71,10 @@ const server = http.createServer( (req,res) =>
             handleDownloadRequest(req, res) ;
             break ;
         case '/style.css' : // STYLE PAGE
-            sendFile(res,'workers/style.css','text/css') ;
+            sendFile(res,'style.css','text/css') ;
+            break ;
+        case '/Verre.png' :
+            sendFile(res, 'Verre.png', 'image/png') ;
             break ;
         default :
             res.writeHead(404,'Not found') ;

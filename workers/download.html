@@ -6,10 +6,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+
+
+    <img src="Verre.png"/>
+
     <h1>Pick a file to download on your computer : </h1>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit">OK</button>
+
+    <form method="post" enctype="multipart/form-data" id="form">
+        <input type="file" id="input_file" name="file" onchange="document.forms['form'].submit() ;" />
     </form>
+
+    <button id="btn" onclick="document.getElementById('input_file').click();">Ok</button>
   </body>
 </html>
