@@ -7,6 +7,12 @@ import { IWebServer } from "./services/IWebServer";
 
 export class WebServer implements IWebServer
 {
+
+    // Assets for the webserver pages
+    static DOWNLOAD_HTML_PAHT: string   = path.join(__dirname, "assets", "html" , "download.html") ;
+    static DOWNLOADED_HTML_PATH: string = path.join(__dirname, "assets", "html" , "downloaded.html") ;
+    static STYLE_PATH: string           = path.join(__dirname, "assets", "css"  , "style.css") ;
+
     // Webserver infos
     private host: string ;
     private port: string ;

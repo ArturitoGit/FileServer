@@ -12,7 +12,9 @@ export interface IWebServer
      * Make the local file given by <path> available on a webserver, 
      * at the returned address
      * 
-     * @param path : The path of the local file to publish
+     * @param path          : The path of the local file to publish
+     * @param name          : The name of the local file to publish
+     * @param onUploaded    : The function to call when the file is downloaded by a user
      * 
      * returns : The address of the available file or error message
      */
@@ -25,6 +27,8 @@ export interface IWebServer
     /**
      * Get the address if the download webserver page. This page allows one to upload his file
      * and make it available as a local file on the webserver host.
+     * 
+     * @param onDownloaded : The function to call when the file is uploaded by the user
      * 
      * returns : the address of the download page of the webserver
      */
