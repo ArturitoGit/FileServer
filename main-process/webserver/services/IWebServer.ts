@@ -35,4 +35,9 @@ export interface IWebServer
     DownloadFile (
         onDownloaded: (filePath: string, fileName: string) => void
     ) : Promise<string> ; 
+
+    /**
+     * Shuts down the server if it is still running
+     */
+    ShutDownServer() : void ;
 }
