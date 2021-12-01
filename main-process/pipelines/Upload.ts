@@ -1,5 +1,7 @@
 import * as path from 'path'
 import { IFileSelector } from "../dialog/services/IFileSelector";
+import { AbstractEvent } from '../events/AbstractEvent';
+import { FileUploadedEvent } from '../events/FileUploadedEvent';
 import { IWebServer } from "../webserver/services/IWebServer";
 
 export class Upload
@@ -56,7 +58,9 @@ export class Upload
 
     private onFileUploaded = () => 
     {
-        // TODO : Call the event FileUploaded
+        // Trigger the onFileuploaded event
+        var event = new FileUploadedEvent() ;
+        event.Fire() ;
     }
 }
 

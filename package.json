@@ -30,6 +30,7 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
+    "@billjs/event-emitter": "^1.0.3",
     "electron-fetch": "^1.7.4",
     "electron-squirrel-startup": "^1.0.0",
     "formidable": "^2.0.1",

@@ -1,3 +1,5 @@
+import { globalEvent } from "@billjs/event-emitter";
+import { FileDownloadedEvent } from "../events/FileDownloadedEvent";
 import { IWebServer } from "../webserver/services/IWebServer";
 
 export class Download
@@ -18,7 +20,9 @@ export class Download
 
     private onFileDownloaded = (path: string, name: string) =>
     {
-        // TODO : Call FileDownloaded event
+        // Trigger the onFIleDownloaded event
+        var event = new FileDownloadedEvent(path,name) ;
+        event.Fire() ;
     }
 }
 
