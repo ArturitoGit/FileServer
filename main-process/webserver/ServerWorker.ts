@@ -8,9 +8,16 @@ import { AWorkerMessage, DownloadedWorkerMessage, DownloadWorkerMessage, Uploade
 
 class ServerWorker
 {
+    // Assets for the webserver pages
+    static DOWNLOAD_HTML_PATH: string   = path.join("html"  , "download.html") ;
+    static DOWNLOADED_HTML_PATH: string = path.join("html"  , "downloaded.html") ;
+    static STYLE_PATH: string           = path.join("css"   , "style.css") ;
+    static IMAGE_PATH: string           = path.join("images", "Verre.png") ;
+
     // Get the host and port parameters from the parent
-    private port: string ;
+    private port: number ;
     private host: string ;
+    private assets_path: string ;
 
     // Current available file at the Upload file
     private upload_file_path: string ;
@@ -21,20 +28,23 @@ class ServerWorker
         // Initialize host and port from worker data
         this.host = workerData.host ;
         this.port = workerData.port ;
+        this.assets_path = workerData.assets_path ;
 
         // Subscribe to messages
         parentPort.on("message", this.onWorkerReceivedMessage) ;
 
         // Start webserver
-        http.createServer(this.requestHandler) ;
+        http.createServer(this.requestHandler).listen(this.port, this.host, () => {
+            console.log(`Server is running on http://${this.host}:${this.port}`);
+        });
     }
 
-    private notifyParent (message: AWorkerMessage): void
+    private notifyParent = (message: AWorkerMessage): void =>
     {
         parentPort.postMessage(message) ;
     }
 
-    private onWorkerReceivedMessage (message: AWorkerMessage): void
+    private onWorkerReceivedMessage = (message: AWorkerMessage) : void =>
     {
         switch(message.type)
         {
@@ -46,9 +56,6 @@ class ServerWorker
                 this.upload_file_path = uploadMessage.file_path ;
                 break ;
             case WorkerMessageType.DOWNLOAD_REQUEST :
-                // Cast the message
-                var downloadMessage = message as DownloadWorkerMessage ;
-                // Update the state variables for the download part
                 break ;
         }
     }
@@ -58,6 +65,13 @@ class ServerWorker
         switch(req.url)
         {
             case ('/upload') :
+                if (this.upload_file_path == null)
+                {
+                    console.log("No upload file defined ...") ;
+                    res.writeHead(404, 'Not found') ;
+                    res.end() ;
+                    break ;
+                }
                 // Call the callback
                 this.notifyParent(new UploadedWorkerMessage()) ;
                 // Make the file downloadable
@@ -70,10 +84,10 @@ class ServerWorker
                 this.handleDownloadRequest(req, res) ;
                 break ;
             case '/style.css' : // STYLE PAGE
-                this.sendFile(res,'style.css','text/css') ;
+                this.sendFile(res, ServerWorker.STYLE_PATH, 'text/css') ;
                 break ;
             case '/Verre.png' :
-                this.sendFile(res, 'Verre.png', 'image/png') ;
+                this.sendFile(res, ServerWorker.IMAGE_PATH, 'image/png') ;
                 break ;
             default :
                 res.writeHead(404,'Not found') ;
@@ -82,9 +96,9 @@ class ServerWorker
     }
 
     // Return a file as a web response
-    private sendFile( response: http.ServerResponse, file_path: string, file_format: string ): void
+    private sendFile = ( response: http.ServerResponse, file_path: string, file_format: string ): void =>
     {
-        var full_path = path.join(__dirname, file_path) ;
+        var full_path = path.join(this.assets_path, file_path) ;
 
         // Read the file, and then ...
         fs.readFile( full_path, (error, content) => 
@@ -102,11 +116,11 @@ class ServerWorker
         })
     }
 
-    private handleDownloadRequest (req: http.IncomingMessage, res: http.ServerResponse) : void
+    private handleDownloadRequest = (req: http.IncomingMessage, res: http.ServerResponse) : void =>
     {
         if (req.method == "GET")
         {
-            this.sendFile(res, 'download.html', 'text/html') ;
+            this.sendFile(res, ServerWorker.DOWNLOAD_HTML_PATH, 'text/html') ;
         }
         else if (req.method == "POST")
         {
@@ -121,7 +135,7 @@ class ServerWorker
                     return ;
                 }
 
-                this.sendFile(res, 'downloaded.html', 'text/html') ;
+                this.sendFile(res, ServerWorker.DOWNLOADED_HTML_PATH, 'text/html') ;
                 var file_path = files.file.filepath ;
                 var file_name = files.file.originalFilename ;
 

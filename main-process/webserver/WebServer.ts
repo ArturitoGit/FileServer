@@ -7,20 +7,15 @@ export class WebServer implements IWebServer
     // Webserver is executed in background, by a worker
     private worker: Worker ;
 
-    // Assets for the webserver pages
-    static DOWNLOAD_HTML_PAHT: string   = path.join(__dirname, "assets", "html" , "download.html") ;
-    static DOWNLOADED_HTML_PATH: string = path.join(__dirname, "assets", "html" , "downloaded.html") ;
-    static STYLE_PATH: string           = path.join(__dirname, "assets", "css"  , "style.css") ;
-
     // Webserver infos
     private host: string ;
-    private port: string ;
+    private port: number ;
 
     // Callbacks
     private onFileUploaded: () => void ;
     private onFileDownloaded: (filePath: string, fileName: string) => void ;
 
-    public Init(host: string, port: string): void
+    public Init = (host: string, port: number, assets_path: string): void =>
     {
         // Update the host and port variables
         this.host = host ;
@@ -29,13 +24,13 @@ export class WebServer implements IWebServer
         // Create a worker and give it the port and host parameters
         this.worker = new Worker(
             path.join(__dirname, 'ServerWorker.js'), 
-            { workerData: {host: host, port: port}}
+            { workerData: {host: host, port: port, assets_path: assets_path}}
         ) ;
         this.worker.on('message', this.onReceiveMessageFromWorker) ;
     }
 
-    public PublishFile(path: string, name: string, onUploaded: () => void ): Promise<[success: boolean, address: string, error: string]> {
-
+    public PublishFile = (path: string, name: string, onUploaded: () => void ): Promise<[success: boolean, address: string, error: string]> =>
+    {
         // Update the callback method
         this.onFileUploaded = onUploaded ;
 
@@ -50,7 +45,8 @@ export class WebServer implements IWebServer
         ]) ;
     }
 
-    public DownloadFile (onDownloaded: (filePath: string, fileName: string) => void) : Promise<string> {
+    public DownloadFile = (onDownloaded: (filePath: string, fileName: string) => void) : Promise<string> =>
+    {
         // Update the callback method
         this.onFileDownloaded = onDownloaded ;
         // Notify the worker
@@ -59,28 +55,29 @@ export class WebServer implements IWebServer
         return Promise.resolve(`http://${this.host}:${this.port}/download`) ;
     }
 
-    public ShutDownServer(): void {
+    public ShutDownServer = (): void =>
+    {
         if (this.worker != null) this.worker.terminate() ;
     }
 
     // Send a message to the worker
-    private NotifyWorker ( message: AWorkerMessage ): void 
+    private NotifyWorker = ( message: AWorkerMessage ): void => 
     {
         this.worker.postMessage(message) ;
     }
 
     // Handle the messages from the worker
-    private onReceiveMessageFromWorker (message: AWorkerMessage): void
+    private onReceiveMessageFromWorker = (message: AWorkerMessage): void =>
     {
         switch (message.type)
         {
             case WorkerMessageType.DOWNLOADED :
                 var message_downloaded = message as DownloadedWorkerMessage ;
                 // Call back
-                this.onFileDownloaded(message_downloaded.file_path, message_downloaded.file_name) ;
+                if (this.onFileDownloaded != null) this.onFileDownloaded(message_downloaded.file_path, message_downloaded.file_name) ;
                 break;
             case WorkerMessageType.UPLOADED :
-                this.onFileUploaded() ;
+                if (this.onFileUploaded != null) this.onFileUploaded() ;
                 break ;
         }
     }

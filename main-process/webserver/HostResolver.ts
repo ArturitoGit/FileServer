@@ -3,7 +3,7 @@ import { IHostResolver } from "./services/IHostResolver";
 export class HostResolver implements IHostResolver
 {
 
-    static PORT: string = "8080" ;
+    static PORT: number = 8080 ;
 
     GetHostIp(): Promise<[success: boolean, address: string, error: string]> {
         // Get all interfaces
@@ -26,7 +26,7 @@ export class HostResolver implements IHostResolver
     }
 
 
-    GetHostPort(): Promise<[success: boolean, port: string, error: string]> {
+    GetHostPort(): Promise<[success: boolean, port: number, error: string]> {
         return Promise.resolve([true, HostResolver.PORT , ""]) ;
     }
 

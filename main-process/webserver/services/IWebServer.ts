@@ -6,7 +6,7 @@ export interface IWebServer
      * @param host : the host of the webserver to init
      * @param port : the port of the webserver to init
      */
-    Init(host: string, port: string): void ;
+    Init(host: string, port: number, assets_path: string): void ;
 
     /**
      * Make the local file given by <path> available on a webserver, 

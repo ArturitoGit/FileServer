@@ -12,5 +12,5 @@ export interface IHostResolver
      * 
      * returns : the port if found, an error message if not
      */
-    GetHostPort(): Promise<[success: boolean, port: string, error: string]> ;
+    GetHostPort(): Promise<[success: boolean, port: number, error: string]> ;
 }
