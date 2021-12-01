@@ -15,18 +15,25 @@ export class WebServer implements IWebServer
     private onFileUploaded: () => void ;
     private onFileDownloaded: (filePath: string, fileName: string) => void ;
 
-    public Init = (host: string, port: number, assets_path: string): void =>
+    public Init = (host: string, port: number, assets_path: string, workerjs_path: string): void =>
     {
         // Update the host and port variables
         this.host = host ;
         this.port = port ;
 
         // Create a worker and give it the port and host parameters
-        this.worker = new Worker(
-            path.join(__dirname, 'ServerWorker.js'), 
-            { workerData: {host: host, port: port, assets_path: assets_path}}
-        ) ;
-        this.worker.on('message', this.onReceiveMessageFromWorker) ;
+        try
+        {
+            this.worker = new Worker(
+                path.join(workerjs_path), 
+                { workerData: {host: host, port: port, assets_path: assets_path}}
+            ) ;
+            this.worker.on('message', this.onReceiveMessageFromWorker) ;
+        }
+        catch (Error)
+        {
+            throw new Error("Incorrect worker path ...") ;
+        }
     }
 
     public PublishFile = (path: string, name: string, onUploaded: () => void ): Promise<{success: boolean, address: string, error: string}> =>

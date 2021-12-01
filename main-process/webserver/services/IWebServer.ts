@@ -3,10 +3,12 @@ export interface IWebServer
 {
     /**
      * Initialises the webserver with the given information
-     * @param host : the host of the webserver to init
-     * @param port : the port of the webserver to init
+     * @param host          : the host of the webserver to init
+     * @param port          : the port of the webserver to init
+     * @param assets_path   : the path to the assets folder that containt the static files for the webserver
+     * @param workerjs_path : the path to the worker js script
      */
-    Init(host: string, port: number, assets_path: string): void ;
+    Init(host: string, port: number, assets_path: string, workerjs_path: string): void ;
 
     /**
      * Make the local file given by <path> available on a webserver, 
