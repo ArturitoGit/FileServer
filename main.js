@@ -1,6 +1,5 @@
 const { app, BrowserWindow, dialog, MessageChannelMain } = require('electron')
 const path = require('path')
-const fetch = require ('electron-fetch').default
 const { Worker } = require('worker_threads') ;
 var fs = require ('fs') ;
 
