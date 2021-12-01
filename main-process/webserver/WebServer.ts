@@ -29,7 +29,7 @@ export class WebServer implements IWebServer
         this.worker.on('message', this.onReceiveMessageFromWorker) ;
     }
 
-    public PublishFile = (path: string, name: string, onUploaded: () => void ): Promise<[success: boolean, address: string, error: string]> =>
+    public PublishFile = (path: string, name: string, onUploaded: () => void ): Promise<{success: boolean, address: string, error: string}> =>
     {
         // Update the callback method
         this.onFileUploaded = onUploaded ;
@@ -38,11 +38,11 @@ export class WebServer implements IWebServer
         this.NotifyWorker(new UploadWorkerMessage(path, name)) ;
 
         // Return the address
-        return Promise.resolve([
-            true,
-            `http://${this.host}:${this.port}/upload`,
-            ""
-        ]) ;
+        return Promise.resolve({
+            success: true,
+            address: `http://${this.host}:${this.port}/upload`,
+            error: ""
+        }) ;
     }
 
     public DownloadFile = (onDownloaded: (filePath: string, fileName: string) => void) : Promise<string> =>

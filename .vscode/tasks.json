@@ -15,13 +15,34 @@
             }
         },
         {
+            "label": "Make",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "make"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "Build",
             "type": "shell",
             "command": "npm",
             "args": [
-                "run", "make"
-            ],
-            "problemMatcher": [],
+                "run",
+                "build"
+            ],            
+            "problemMatcher": []
+        },
+        {
+            "label": "Test",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "test"
+            ],            
+            "problemMatcher": []
         }
     ]
 }

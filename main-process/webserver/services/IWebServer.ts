@@ -22,7 +22,7 @@ export interface IWebServer
         path: string, 
         name: string, 
         onUploaded: () => void 
-    ) : Promise<[success: boolean, address: string, error: string]> ;
+    ) : Promise<{success: boolean, address: string, error: string}> ;
 
     /**
      * Get the address if the download webserver page. This page allows one to upload his file

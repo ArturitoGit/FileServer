@@ -5,14 +5,18 @@ export class HostResolver implements IHostResolver
 
     static PORT: number = 8080 ;
 
-    GetHostIp(): Promise<[success: boolean, address: string, error: string]> {
+    GetHostIp(): Promise<{success: boolean, address: string, error: string}> {
         // Get all interfaces
         var os = require('os');
         var allNetworkInterfaces = os.networkInterfaces();
         
         // Extract the wifi interface informations
         var wifiNetwork = this.getField(allNetworkInterfaces, "Wi-Fi") ;
-        if (wifiNetwork == null) return Promise.resolve([false, "", "Wifi interface not found ..."]) ;
+        if (wifiNetwork == null) return Promise.resolve({
+            success : false, 
+            address : "", 
+            error   : "Wifi interface not found ..."
+        }) ;
 
         // Extract the ipv4 address
         var address = null ;
@@ -20,14 +24,18 @@ export class HostResolver implements IHostResolver
         {
             if (value["family"] == "IPv4") address = value["address"] ;
         }
-        if (address == null) return Promise.resolve([false, "", "No IPv4 adress found for Wi-Fi ..."]) ;
+        if (address == null) return Promise.resolve({
+            success: false, 
+            address: "", 
+            error: "No IPv4 adress found for Wi-Fi ..."
+        }) ;
 
-        return Promise.resolve([true, address, ""]) ;
+        return Promise.resolve({success: true, address: address,error: ""}) ;
     }
 
 
-    GetHostPort(): Promise<[success: boolean, port: number, error: string]> {
-        return Promise.resolve([true, HostResolver.PORT , ""]) ;
+    GetHostPort(): Promise<{success: boolean, port: number, error: string}> {
+        return Promise.resolve({success: true, port: HostResolver.PORT , error: ""}) ;
     }
 
         // Get the value associated with the <searched_key> in the json or null if not found
