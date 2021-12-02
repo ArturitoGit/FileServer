@@ -1,6 +1,9 @@
+import { BrowserWindow } from 'electron';
 import * as path from 'path'
+import { inject } from 'tsyringe';
 
 import { IRootPathProvider } from "../path/services/IRootPathProvider";
+import { IRendererNotifier } from '../renderer-msg/services/IRendererNotifier';
 import { IHostResolver } from "../webserver/services/IHostResolver";
 import { IWebServer } from "../webserver/services/IWebServer";
 
@@ -8,13 +11,17 @@ export class Start
 {
     constructor 
     (
-        public webServer: IWebServer,
-        public hostResolver: IHostResolver,
-        public rootPathProvider: IRootPathProvider
+        @inject('Webserver')        public webServer: IWebServer,
+        @inject('HostResolver')     public hostResolver: IHostResolver,
+        @inject('RootProvider')     public rootPathProvider: IRootPathProvider,
+        @inject('RendererNotifier') public rendererNotifier: IRendererNotifier 
     ){}
 
-    public Handle = async () =>
+    public Handle = async (request: StartRequest) =>
     {
+        // Start the renderer notifier
+        this.rendererNotifier.Init(request.window) ;
+
         // Get the webserver infos
         var port_result = await this.hostResolver.GetHostPort() ;
         var host_result = await this.hostResolver.GetHostIp() ;
@@ -38,6 +45,11 @@ export class Start
             assetsPath, workerPath
         )
     }
+}
+
+export interface StartRequest
+{
+    window: BrowserWindow
 }
 
 export interface StartResult

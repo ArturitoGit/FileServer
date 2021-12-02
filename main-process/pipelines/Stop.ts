@@ -1,3 +1,4 @@
+import { inject } from "tsyringe";
 import { IWebServer } from "../webserver/services/IWebServer";
 
 export class Stop
@@ -5,7 +6,7 @@ export class Stop
 
     constructor
     (
-        public webserver: IWebServer
+        @inject('Webserver')public webserver: IWebServer
     )
     {}
 

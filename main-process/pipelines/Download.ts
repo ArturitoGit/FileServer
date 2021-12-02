@@ -1,14 +1,16 @@
+import { inject, injectable } from "tsyringe";
 import { IFileSaver } from "../dialog/services/IFileSaver";
 import { IRendererNotifier } from "../renderer-msg/services/IRendererNotifier";
 import { IWebServer } from "../webserver/services/IWebServer";
 
+@injectable()
 export class Download
 {
     constructor 
     (
-        public webServer: IWebServer,
-        public rendererNotifier: IRendererNotifier,
-        public fileSaver: IFileSaver
+        @inject('Webserver')public webServer: IWebServer,
+        @inject('RendererNotifier')public rendererNotifier: IRendererNotifier,
+        @inject('FileSaver')public fileSaver: IFileSaver
     ) {}
 
     public Handle = async () : Promise<DownloadResult> =>

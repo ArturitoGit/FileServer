@@ -3,7 +3,7 @@ import { container } from "tsyringe";
 import { Download } from "../pipelines/Download";
 import { Upload } from "../pipelines/Upload";
 
-ipcMain.handle('download-request', async request => 
+ipcMain.handle('download-request', async _request => 
 {
     // Call the download pipeline
     const handler = container.resolve(Download) ;
@@ -13,7 +13,7 @@ ipcMain.handle('download-request', async request =>
     return result ;
 })
 
-ipcMain.handle('upload-request', async request =>
+ipcMain.handle('upload-request', async _request =>
 {
     // Call the upload pipeline
     const handler = container.resolve(Upload) ;
