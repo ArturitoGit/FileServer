@@ -30,7 +30,7 @@ describe('WebServer', function() {
   let host: string = "localhost" ;
   let port: number = 8080 ;
   let assets_path: string = path.join(__dirname,'../../../../main-process/webserver/assets') ;
-  let worker_path: string = path.join(__dirname,'../../../../dist/main-process/webserver/ServerWorker.js') ;
+  let worker_path: string = path.join(__dirname,'../../../../dist/main-process/webserver') ;
 
   before(function () {
     // Initialize webserver

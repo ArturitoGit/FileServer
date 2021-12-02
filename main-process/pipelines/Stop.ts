@@ -1,6 +1,7 @@
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { IWebServer } from "../webserver/services/IWebServer";
 
+@injectable()
 export class Stop
 {
 

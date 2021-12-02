@@ -1,20 +1,20 @@
 import { BrowserWindow } from 'electron';
 import * as path from 'path'
-import { inject } from 'tsyringe';
-
+import { inject, injectable } from 'tsyringe';
 import { IRootPathProvider } from "../path/services/IRootPathProvider";
 import { IRendererNotifier } from '../renderer-msg/services/IRendererNotifier';
 import { IHostResolver } from "../webserver/services/IHostResolver";
 import { IWebServer } from "../webserver/services/IWebServer";
 
+@injectable()
 export class Start
 {
     constructor 
     (
-        @inject('Webserver')        public webServer: IWebServer,
-        @inject('HostResolver')     public hostResolver: IHostResolver,
-        @inject('RootProvider')     public rootPathProvider: IRootPathProvider,
-        @inject('RendererNotifier') public rendererNotifier: IRendererNotifier 
+        @inject('Webserver')        private webServer:          IWebServer,
+        @inject('HostResolver')     private hostResolver:       IHostResolver,
+        @inject('RootProvider')     private rootPathProvider:   IRootPathProvider,
+        @inject('RendererNotifier') private rendererNotifier:   IRendererNotifier 
     ){}
 
     public Handle = async (request: StartRequest) =>

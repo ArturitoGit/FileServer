@@ -25,7 +25,7 @@ export class WebServer implements IWebServer
         try
         {
             this.worker = new Worker(
-                path.join(workerjs_path), 
+                path.join(workerjs_path, 'ServerWorker.js'), 
                 { workerData: {host: host, port: port, assets_path: assets_path}}
             ) ;
             this.worker.on('message', this.onReceiveMessageFromWorker) ;
