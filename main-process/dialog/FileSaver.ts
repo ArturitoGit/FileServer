@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import { dialog } from "electron";
-import { IFileSaver } from "./IFileSaver";
+import { IFileSaver } from "./services/IFileSaver";
 
 export class FileSaver implements IFileSaver
 {
