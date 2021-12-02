@@ -1,7 +1,6 @@
 import * as path from 'path'
 import { IFileSelector } from "../dialog/services/IFileSelector";
-import { AbstractEvent } from '../events/AbstractEvent';
-import { FileUploadedEvent } from '../events/FileUploadedEvent';
+import { IRendererNotifier } from '../renderer-msg/services/IRendererNotifier';
 import { IWebServer } from "../webserver/services/IWebServer";
 
 export class Upload
@@ -9,7 +8,8 @@ export class Upload
     constructor
     (
         public webServer: IWebServer,
-        public fileSelector: IFileSelector
+        public fileSelector: IFileSelector,
+        public rendererNotifier: IRendererNotifier
     )
     {}
 
@@ -58,9 +58,8 @@ export class Upload
 
     private onFileUploaded = () => 
     {
-        // Trigger the onFileuploaded event
-        var event = new FileUploadedEvent() ;
-        event.Fire() ;
+        // Notify the renderer
+        this.rendererNotifier.NotifyRenderer('file-uploaded')
     }
 }
 

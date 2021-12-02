@@ -1,12 +1,14 @@
-import { globalEvent } from "@billjs/event-emitter";
-import { FileDownloadedEvent } from "../events/FileDownloadedEvent";
+import { IFileSaver } from "../dialog/services/IFileSaver";
+import { IRendererNotifier } from "../renderer-msg/services/IRendererNotifier";
 import { IWebServer } from "../webserver/services/IWebServer";
 
 export class Download
 {
     constructor 
     (
-        public webServer: IWebServer
+        public webServer: IWebServer,
+        public rendererNotifier: IRendererNotifier,
+        public fileSaver: IFileSaver
     ) {}
 
     public Handle = async () : Promise<DownloadResult> =>
@@ -18,11 +20,14 @@ export class Download
         return { address: address }
     }
 
-    private onFileDownloaded = (path: string, name: string) =>
+    // Function called when a file has been given for download
+    private onFileDownloaded = async (path: string, name: string) =>
     {
-        // Trigger the onFIleDownloaded event
-        var event = new FileDownloadedEvent(path,name) ;
-        event.Fire() ;
+        // Open a dialog to save the file locally
+        await this.fileSaver.SaveFile(path, name) ;
+
+        // Notify the renderer (even if the save has been canceled)
+        this.rendererNotifier.NotifyRenderer('file-downloaded')
     }
 }
 
