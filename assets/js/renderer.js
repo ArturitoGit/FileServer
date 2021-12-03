@@ -13,26 +13,24 @@ const qrcode            = document.getElementById("qrcode") ;
 onStart() ;
 
 // On buttons click
-btn_upload.onclick = async function () {
-    // port.postMessage({ type: "upload-clicked" }) ;
-    console.log(await window.electron.ipcRenderer.invoke('download-request'))
+btn_upload.onclick = async () => 
+{
+    // Call the pipeline
+    var result = await window.electron.ipcRenderer.invoke('upload-request')
+    if (result.canceled) return 
+    // Go to upload page
+    showUploadMenu(result.address)
 }
 
-btn_download.onclick = function () {
-    port.postMessage({ type: "download-clicked" }) ;
+btn_download.onclick = async () => 
+{
+    var result = await window.electron.ipcRenderer.invoke('download-request')
+    showDownloadMenu(result.address)
 }
 
 btn_back.onclick = function () {
-    port.postMessage({ type: "back-clicked" }) ;
     showFirstMenu() ;
 }
-
-// On server response for the clicked event
-var onUploadReady = address => showUploadMenu(address) ;
-var onDownloadReady = address => showDownloadMenu(address) ; 
-var onFileUploaded = () => {} ;
-var onFileDownloaded = () => showFirstMenu ;
-
 
 // Function called on page initialisation
 function onStart()

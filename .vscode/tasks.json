@@ -12,7 +12,10 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "dependsOn": [
+                "Build"
+            ]
         },
         {
             "label": "Make",

@@ -1,16 +1,17 @@
 import * as path from 'path'
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { IFileSelector } from "../dialog/services/IFileSelector";
 import { IRendererNotifier } from '../renderer-msg/services/IRendererNotifier';
 import { IWebServer } from "../webserver/services/IWebServer";
 
+@injectable()
 export class Upload
 {
     constructor
     (
         @inject('Webserver')public webServer: IWebServer,
         @inject('FileSelector')public fileSelector: IFileSelector,
-        @inject('IRendererNotifier')public rendererNotifier: IRendererNotifier
+        @inject('RendererNotifier')public rendererNotifier: IRendererNotifier
     )
     {}
 

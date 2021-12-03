@@ -4,9 +4,14 @@ const { Start } = require('./dist/main-process/pipelines/Start')
 const { Stop } = require('./dist/main-process/pipelines/Stop')
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
+
+
 function createWindow () {
 
-    const win = new BrowserWindow({
+    // Create window object
+    const win = new BrowserWindow(
+    {
+        // Window dimensions
         width: 800,
         height: 600,
         
@@ -16,6 +21,8 @@ function createWindow () {
           color: '#000000',
           symbolColor: '#adff2f'
         },
+
+        // Preload script
         webPreferences: 
         { 
             preload: path.join(__dirname, 'preload.js')
@@ -24,6 +31,8 @@ function createWindow () {
 
     // Remove the menu
     // win.setMenu(null) ;
+
+    // Load html resources
     win.loadFile('./assets/html/index.html')
 
     // Register the services
@@ -46,6 +55,7 @@ app.whenReady().then(() => {
     })
 })
 
+// On app close
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
