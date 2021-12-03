@@ -14,13 +14,6 @@ function createWindow () {
         // Window dimensions
         width: 800,
         height: 600,
-        
-        // Make the title bar of the window black and not draggable
-        titleBarStyle: 'hidden',
-        titleBarOverlay: {
-          color: '#000000',
-          symbolColor: '#adff2f'
-        },
 
         // Preload script
         webPreferences: 
