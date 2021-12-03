@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <!-- Style sheet -->
         <link rel="stylesheet" href="../css/style.css">
+        <!-- QRCode library -->
         <script src="../js/qrcode/qrcode.js"></script> 
         
         <title>File server</title>
     </head>
 
     <body>     
+
+        <!-- First page -->
         <div id="menu">
+            <!-- Logo -->
             <img src="./../resources/Verre.png" id="logo"/>
             <h2>Pick an option : </h2>
+            <!-- Buttons -->
             <div id="menu-btns">
                 <button id="btn_upload">Upload a file</button>
                 <button id="btn_download">Download a file</button>
             </div>
         </div>
 
+        <!-- Menu UPLOAD and DOWNLOAD -->
         <div id="menu_upload">
-            <p>
-                <span id="menu_upload_label"></span></br>
-            </p>
+            <!-- Label -->
+            <p><span id="menu_upload_label"></span></br></p>
+            <!-- QrCode -->
             <div id="qrcode"></div>
+            <!-- Link -->
             <a href="#" id="link"></a>
+            <!-- Back button -->
             <button id="btn_upload_back" class="classic-btn">Back to menu</button> 
         </div>
 
