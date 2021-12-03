@@ -8,9 +8,9 @@ export class Download
 {
     constructor 
     (
-        @inject('Webserver')public webServer: IWebServer,
-        @inject('RendererNotifier')public rendererNotifier: IRendererNotifier,
-        @inject('FileSaver')public fileSaver: IFileSaver
+        @inject('Webserver')        private webServer:          IWebServer,
+        @inject('RendererNotifier') private rendererNotifier:   IRendererNotifier,
+        @inject('FileSaver')        private fileSaver:          IFileSaver
     ) {}
 
     public Handle = async () : Promise<DownloadResult> =>

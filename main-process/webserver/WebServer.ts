@@ -62,16 +62,10 @@ export class WebServer implements IWebServer
         return Promise.resolve(`http://${this.host}:${this.port}/download`) ;
     }
 
-    public ShutDownServer = (): void =>
-    {
-        if (this.worker != null) this.worker.terminate() ;
-    }
+    public ShutDownServer = (): void => { this.worker.terminate() } ;
 
     // Send a message to the worker
-    private NotifyWorker = ( message: AWorkerMessage ): void => 
-    {
-        this.worker.postMessage(message) ;
-    }
+    private NotifyWorker = ( message: AWorkerMessage ): void => this.worker.postMessage(message) ;
 
     // Handle the messages from the worker
     private onReceiveMessageFromWorker = (message: AWorkerMessage): void =>

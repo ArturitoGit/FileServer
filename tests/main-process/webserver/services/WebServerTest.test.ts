@@ -3,7 +3,6 @@ import * as path from 'path'
 const fs = require('fs')
 import * as webdriver from 'selenium-webdriver';
 var remote = require('selenium-webdriver/remote');
-const chrome = require('selenium-webdriver/chrome');
 import { WebServer } from '../../../../main-process/webserver/WebServer';
 
 describe('WebServer', function() {

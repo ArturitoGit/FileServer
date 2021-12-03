@@ -1,6 +1,8 @@
 import 'reflect-metadata' ;
-import { container      } from 'tsyringe' ;
+import { container, Lifecycle      } from 'tsyringe' ;
+import { FileSaver } from '../dialog/FileSaver';
 import { FileSelector } from '../dialog/FileSelector';
+import { IFileSaver } from '../dialog/services/IFileSaver';
 import { IFileSelector } from '../dialog/services/IFileSelector';
 import { RootPathProvider } from '../path/RootPathProvider';
 import { IRootPathProvider } from '../path/services/IRootPathProvider';
@@ -13,7 +15,10 @@ import { WebServer      } from '../webserver/WebServer' ;
 
 // Register the service
 container.register<IHostResolver>       ("HostResolver",        { useClass: HostResolver     });
-container.register<IWebServer>          ("Webserver",           { useClass: WebServer        });
 container.register<IRootPathProvider>   ("RootProvider",        { useClass: RootPathProvider });
 container.register<IFileSelector>       ("FileSelector",        { useClass: FileSelector     });
+container.register<IFileSaver>          ("FileSaver",           { useClass: FileSaver        });
 container.register<IRendererNotifier>   ("RendererNotifier",    { useClass: RendererNotifier });
+
+// Register a singleton : the same webserver is used all along the app life
+container.register <IWebServer> ("Webserver", { useClass: WebServer }, { lifecycle: Lifecycle.Singleton });

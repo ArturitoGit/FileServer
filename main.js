@@ -23,7 +23,7 @@ function createWindow () {
     })
 
     // Remove the menu
-    win.setMenu(null) ;
+    // win.setMenu(null) ;
     win.loadFile('./assets/html/index.html')
 
     // Register the services

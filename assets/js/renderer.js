@@ -13,8 +13,9 @@ const qrcode            = document.getElementById("qrcode") ;
 onStart() ;
 
 // On buttons click
-btn_upload.onclick = function () {
-    port.postMessage({ type: "upload-clicked" }) ;
+btn_upload.onclick = async function () {
+    // port.postMessage({ type: "upload-clicked" }) ;
+    console.log(await window.electron.ipcRenderer.invoke('download-request'))
 }
 
 btn_download.onclick = function () {
