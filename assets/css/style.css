@@ -8,6 +8,7 @@ body {
     background-color: black ;  
     color : greenyellow ;    
     font-family: Verdana,Geneva,sans-serif; 
+    cursor: pointer;
 }
 
 #menu-btns {
@@ -75,4 +76,18 @@ button:hover {
 
 #qrcode {
     margin : 20px ;
+}
+
+img {
+    height : 30em ;
+}
+
+h1 {
+    font-size: 2.5em ;
+    max-width: 80vw ;
+    text-align : center ;
+}
+
+#input_file {
+    display: none ;
 }

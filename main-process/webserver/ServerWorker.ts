@@ -9,10 +9,10 @@ import { AWorkerMessage, DownloadedWorkerMessage, DownloadWorkerMessage, Uploade
 class ServerWorker
 {
     // Assets for the webserver pages
-    static DOWNLOAD_HTML_PATH: string   = path.join("html"  , "download.html") ;
-    static DOWNLOADED_HTML_PATH: string = path.join("html"  , "downloaded.html") ;
-    static STYLE_PATH: string           = path.join("css"   , "style.css") ;
-    static IMAGE_PATH: string           = path.join("images", "Verre.png") ;
+    static DOWNLOAD_HTML_PATH: string   = path.join("html"      , "download.html") ;
+    static DOWNLOADED_HTML_PATH: string = path.join("html"      , "downloaded.html") ;
+    static STYLE_PATH: string           = path.join("css"       , "style.css") ;
+    static IMAGE_PATH: string           = path.join("resources" , "Verre.png") ;
 
     // Get the host and port parameters from the parent
     private port: number ;

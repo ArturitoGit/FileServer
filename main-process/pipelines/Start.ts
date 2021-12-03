@@ -36,7 +36,7 @@ export class Start
 
         // Get the path infos from the root path
         var rootPath: string = this.rootPathProvider.GetRootPath() ;
-        var assetsPath = path.join(rootPath, 'main-process', 'webserver','assets') ;
+        var assetsPath = path.join(rootPath, 'assets') ;
         var workerPath = path.join(rootPath, 'dist', 'main-process', 'webserver') ;
 
         // Start the webserver
