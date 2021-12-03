@@ -56,6 +56,7 @@ export class WebServer implements IWebServer
     {
         // Update the callback method
         this.onFileDownloaded = onDownloaded ;
+
         // Notify the worker
         this.NotifyWorker(new DownloadWorkerMessage()) ;
         // Return the address
@@ -76,6 +77,7 @@ export class WebServer implements IWebServer
                 var message_downloaded = message as DownloadedWorkerMessage ;
                 // Call back
                 if (this.onFileDownloaded != null) this.onFileDownloaded(message_downloaded.file_path, message_downloaded.file_name) ;
+                else (console.log("No downloaded-file callback ..."))
                 break;
             case WorkerMessageType.UPLOADED :
                 if (this.onFileUploaded != null) this.onFileUploaded() ;

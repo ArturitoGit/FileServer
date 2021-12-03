@@ -72,7 +72,6 @@ class ServerWorker
                     res.end() ;
                     break ;
                 }
-                console.log("send file with name : " + this.upload_file_name) ;
                 // Call the callback
                 this.notifyParent(new UploadedWorkerMessage()) ;
                 // Make the file downloadable

@@ -28,11 +28,5 @@ function onMessage ( event )
         case "file-uploaded" :
             onFileUploaded() ;
             break ;
-        case "upload-ready" :
-            onUploadReady(event.data.address) ;
-            break ;
-        case "download-ready" :
-            onDownloadReady(event.data.address) ;
-            break ;
     }
 }

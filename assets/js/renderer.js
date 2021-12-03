@@ -28,9 +28,11 @@ btn_download.onclick = async () =>
     showDownloadMenu(result.address)
 }
 
-btn_back.onclick = function () {
-    showFirstMenu() ;
-}
+btn_back.onclick = () => showFirstMenu() 
+
+// On main events
+onFileDownloaded = () => showFirstMenu()
+onFileUploaded   = () => showFirstMenu()
 
 // Function called on page initialisation
 function onStart()
