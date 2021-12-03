@@ -5,10 +5,27 @@ body {
     flex-direction : column ;
     align-items: center;
     justify-content:center;
-    background-color: black ;  
-    color : greenyellow ;    
     font-family: Verdana,Geneva,sans-serif; 
     cursor: pointer;
+
+    --color-text: #7bbacf ;
+}
+
+button {
+    border: 2px solid var(--color-text);
+    color : var(--color-text); ;
+    background : none ;
+    cursor: pointer;
+    border-radius: 5px ;
+    font-size: 1.1em ;
+    padding: 10px ;
+    margin: 10px ;
+    min-width: 150px ;
+}
+
+button:hover {
+    background-color : var(--color-text);
+    color : white ;
 }
 
 #menu-btns {
@@ -16,9 +33,15 @@ body {
     justify-content: center ;
 }
 
+h1 {
+    font-size: 2.5em ;
+    max-width: 80vw ;
+    text-align : center ;
+}
+
 h2 {
     text-align : center ;
-    color : greenyellow ;
+    color : var(--color-text) ;
 }
 
 #logo {
@@ -41,8 +64,13 @@ h2 {
 }
 
 #menu_upload_label {
+    color: var(--color-text) ;
     font-size : 1.5em ;
     text-align : center ;
+}
+
+#qrcode {
+    margin : 20px ;
 }
 
 p {
@@ -51,41 +79,10 @@ p {
 }
 
 a {
-    color : #adff2f ;
+    color : var(--color-text); ;
     text-decoration: none ;
     margin-top : 10px;
     margin-bottom : 20px ;
-}
-
-button {
-    border: 2px solid greenyellow;
-    color : greenyellow ;
-    background : none ;
-    cursor: pointer;
-    border-radius: 5px ;
-    font-size: 1em ;
-    padding: 10px ;
-    margin: 10px ;
-    min-width: 150px ;
-}
-
-button:hover {
-    background-color : greenyellow ;
-    color : black ;
-}
-
-#qrcode {
-    margin : 20px ;
-}
-
-img {
-    height : 30em ;
-}
-
-h1 {
-    font-size: 2.5em ;
-    max-width: 80vw ;
-    text-align : center ;
 }
 
 #input_file {

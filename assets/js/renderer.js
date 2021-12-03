@@ -9,6 +9,9 @@ const btn_download      = document.getElementById("btn_download") ;
 const link              = document.getElementById("link") ;
 const qrcode            = document.getElementById("qrcode") ;
 
+const qrcode_color = "#7bbacf" ;
+const qrcode_color_background = "#ffffff" ;
+
 // Setup the page
 onStart() ;
 
@@ -59,8 +62,8 @@ function showUploadMenu (address)
     // Show a QR code of the address
     new QRCode("qrcode", {
         text: address ,
-        colorDark : "#adff2f",
-        colorLight : "#000000",
+        colorDark : qrcode_color,
+        colorLight : qrcode_color_background,
         correctLevel : QRCode.CorrectLevel.H
     });    
     // Update link
@@ -76,8 +79,8 @@ function showDownloadMenu (address)
     menu_upload_label.innerHTML = "Please upload your file there : " ;
     new QRCode("qrcode", {
         text: address ,
-        colorDark : "#adff2f",
-        colorLight : "#000000",
+        colorDark : qrcode_color,
+        colorLight : qrcode_color_background,
         correctLevel : QRCode.CorrectLevel.H
     });
     link.innerHTML = address ;
