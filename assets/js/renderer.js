@@ -9,7 +9,7 @@ const btn_download      = document.getElementById("btn_download") ;
 const link              = document.getElementById("link") ;
 const qrcode            = document.getElementById("qrcode") ;
 
-const qrcode_color = "#7bbacf" ;
+const qrcode_color = "#647d00ff" ;
 const qrcode_color_background = "#ffffff" ;
 
 // Setup the page

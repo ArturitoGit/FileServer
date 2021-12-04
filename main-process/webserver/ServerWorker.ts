@@ -12,7 +12,7 @@ class ServerWorker
     static DOWNLOAD_HTML_PATH: string   = path.join("html"      , "download.html") ;
     static DOWNLOADED_HTML_PATH: string = path.join("html"      , "downloaded.html") ;
     static STYLE_PATH: string           = path.join("css"       , "style.css") ;
-    static IMAGE_PATH: string           = path.join("resources" , "Verre.png") ;
+    static IMAGE_PATH: string           = path.join("resources" , "Taupe.png") ;
 
     // Get the host and port parameters from the parent
     private port: number ;
@@ -86,7 +86,7 @@ class ServerWorker
             case '/style.css' : // STYLE PAGE
                 this.sendFile(res, ServerWorker.STYLE_PATH, 'text/css') ;
                 break ;
-            case '/Verre.png' :
+            case '/Taupe.png' :
                 this.sendFile(res, ServerWorker.IMAGE_PATH, 'image/png') ;
                 break ;
             default :

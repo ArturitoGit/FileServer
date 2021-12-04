@@ -12,7 +12,7 @@ function createWindow () {
     const win = new BrowserWindow(
     {
         // Window dimensions
-        width: 800,
+        width: 700,
         height: 600,
 
         // Preload script
@@ -23,7 +23,7 @@ function createWindow () {
     })
 
     // Remove the menu
-    // win.setMenu(null) ;
+    win.setMenu(null) ;
 
     // Load html resources
     win.loadFile('./assets/html/index.html')
